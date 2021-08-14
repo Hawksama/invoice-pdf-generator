@@ -3,6 +3,7 @@
     "description": "Magento 2 PDF invoice generator",
     "type": "magento2-module",
     "license": "OSL-3.0",
+    "minimum-stability": "stable",
     "authors": [
         {
             "email": "manue971@icloud.com",
