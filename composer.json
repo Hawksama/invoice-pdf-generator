@@ -19,7 +19,7 @@
         "magento pdf",
         "magento 2 invoice pdf"
     ],
-    "version": "1.0.5",
+    "version": "1.0.6",
     "require": {
         "php": "^7.1.0",
         "dompdf/dompdf": "^0.8.3"
