@@ -1,18 +1,26 @@
 {
-    "name": "hawksama/invoice-pdf",
-    "description": "Invoice PDF generator",
+    "name": "hawksama/magento-2-pdf-invoice-generator",
+    "description": "Magento 2 PDF invoice generator",
     "type": "magento2-module",
     "license": "OSL-3.0",
-    "prefer-stable": true,
     "authors": [
         {
             "email": "manue971@icloud.com",
             "name": "Alexandru-Manuel Carabus"
         }
     ],
+    "keywords": [
+        "magento 2",
+        "Alexandru Manuel Carabus",
+        "invoice pdf",
+        "pdf generator",
+        "pdf",
+        "magento pdf",
+        "magento 2 invoice pdf"
+    ],
     "version": "1.0.5",
     "require": {
-        "php": "^7.2.0",
+        "php": "^7.1.0",
         "dompdf/dompdf": "^0.8.3"
     },
     "autoload": {
