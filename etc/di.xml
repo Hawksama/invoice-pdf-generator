@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Sales\Model\Order\Pdf\Invoice">
+        <plugin name="Hawksama_Invoice::Invoice_Dompdf" type="Hawksama\Invoice\Plugin\Model\Order\Pdf\InvoicePlugin" sortOrder="1" />
+    </type>
+    <type name="Magento\Sales\Model\Order\Pdf\Creditmemo">
+        <plugin name="Hawksama_Invoice::Creditmemo_Dompdf" type="Hawksama\Invoice\Plugin\Model\Order\Pdf\CreditmemoPlugin" sortOrder="1" />
+    </type>
+    <type name="Magento\Framework\DB\Sequence\SequenceInterface">
+        <arguments>
+            <argument name="pattern" xsi:type="string">%s%'.07d%s</argument>
+        </arguments>
+    </type>
+    <preference for="Magento\Sales\Block\Order\Item\Renderer\DefaultRenderer" type="Hawksama\Invoice\Block\Order\Item\Renderer\DefaultRenderer"/>
+    <preference for="Magento\Sales\Block\Order\Email\Items\Order\DefaultOrder" type="Hawksama\Invoice\Block\Order\Email\Items\Order\DefaultOrder"/>
+    <preference for="Magento\Sales\Controller\Order\PrintInvoice" type="Hawksama\Invoice\Controller\Order\PrintInvoice"/>
+</config>

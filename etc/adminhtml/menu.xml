@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Hawksama_Invoice::configuration" module="Hawksama_Invoice" resource="Magento_Backend::content" sortOrder="10" title="Invoice PDF"/>
+        <add action="admin/system_config/edit/section/invoice_pdf" id="Hawksama_Invoice::hawksama_invoice" module="Hawksama_Invoice" parent="Hawksama_Invoice::configuration" resource="Magento_Backend::content" sortOrder="10" title="Invoice PDF configuration"/>
+    </menu>
+</config>

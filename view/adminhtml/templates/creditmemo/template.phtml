@@ -1,0 +1,503 @@
+<?php /** @var $block = \Hawksama\Invoice\Block\Adminhtml\Creditmemo\Pdf */ ?>
+<?php $creditmemo = $block->getCreditmemo(); ?>
+<?php $order = $creditmemo->getOrder(); ?>
+<?php $customerId = $order->getCustomerId(); ?>
+<?php $billingAddress = $order->getBillingAddress(); ?>
+<?php $listingHeight = 530; ?>
+<?php $rowLength = 40; ?>
+<?php $addressRowLength = 35; ?>
+<?php $addressHeight = 15; ?>
+<?php $storeId = $order->getStoreId() ?>
+<?php $creditmemoItems = $block->getEntityItems($creditmemo, $order); ?>
+<?php $itemsCount = count($creditmemoItems); ?>
+<?php $itemBreakpoints = $block->getBreakpoints($creditmemoItems); ?>
+<?php if ($creditmemo->getId()) : ?>
+    <style>
+        @font-face {
+            font-family: "Helvetica";
+            font-style: normal;
+            font-weight: 900;
+            src: url(<?php echo $block->getFontPath(); ?>) format("truetype");
+        }
+        body {
+            font-family: "Helvetica";
+            max-width: 768px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        p {
+            margin: 0;
+            padding: 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            table-layout:fixed;
+        }
+        table table, table table th, table table td {
+            border: 0px;
+        }
+        table td ul {
+            padding: 0;
+            padding-left: 2px;
+            margin-top: 3px;
+            font-size: 12px;
+        }
+        .only-outline {
+            border-bottom: 0px;
+        }
+        .table-left-bottom {
+            padding: 0px;
+        }
+        .table-left-bottom td {
+            border-right: 1px solid black;
+        }
+        .table-left-bottom td:last-child {
+            border-right: 0;
+        }
+        .only-outline th,
+        .only-outline td {
+            border: 0px;
+        }
+        ul {
+            list-style-type: none;
+        }
+        .only-vertical-lines td {
+            border: 0px;
+            border-right: 1px solid black;
+        }
+        table.product-listing-table,
+        table.product-listing-table th,
+        table.product-listing-table td {
+            border: 1px solid black;
+        }
+        table.product-listing-table.main {
+            border-bottom: none;
+        }
+        .review-table {
+            bottom: 0;
+        }
+        .product-listing-header {
+            font-size: 12px;
+        }
+        .product-listing-table > tbody > tr > td.tr-table-left-bottom {
+            padding: 0;
+            border-spacing: 0;
+            height: 500px;
+        }
+        .product-listing-body {
+            height: 1200px;
+        }
+        .provider-details,
+        .customer-details { 
+            vertical-align: top;
+        }
+
+        .provider-details h5,
+        .customer-details h5 {
+            color: #666;
+            margin-bottom: 10px;
+            margin-top: 0px;
+            padding-top: 30px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid black;
+            width: 50%;
+        }
+
+        .provider-details ul li,
+        .customer-details ul li {
+            font-size: 11px;
+            margin-top: 5px;
+        }
+
+        .provider-details ul li span,
+        .customer-details ul li span {
+            font-size: 14px;
+        }
+
+        .provider-details .name,
+        .customer-details .name {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .product-listing-body tr:nth-child(even){
+            background-color: #dbdbdb;
+        }
+        .product-listing-body tr td {
+            padding: 10px 5px;
+            text-align: center;
+        }
+        .product-listing-header tr th,
+        .product-listing-table tr td {
+            padding: 5px;
+        }
+        .table-left-bottom tr td {
+            border: none;
+            font-size: 14px;
+            color: #666;
+        }
+        .product-listing-table tfoot .td-table-left-bottom {
+            vertical-align: top;
+            padding-top: 20px;
+        }
+        table.product-listing-table.footer .first-row td {
+            border: none;
+            padding: 0;
+        }
+        table.product-listing-table.footer .first-row + tr td {
+            border-top: none;
+        }
+        .product-listing-table.main tr:last-of-type {
+            background-color: transparent;
+        }
+        .product-listing-table.main tr:last-of-type td {
+            padding: 0px;
+            border-bottom: none;
+        }
+        .product-listing-table.footer .td-table-left-bottom {
+            position: relative;
+        }
+        .product-listing-table.footer .td-table-left-bottom .table-left-bottom {
+            min-height: 100px;
+            position: relative;
+        }
+        .product-listing-table.footer .td-table-left-bottom .table-left-bottom td {
+            vertical-align: top;
+        }
+        table {
+            page-break-inside: avoid !important;
+        }
+    </style>
+    <?php $creditmemoPrefix = $block->getEntityPrefix($creditmemo); ?>
+    <div class="invoice-wrapper">
+        <?php $numberOfItems = 0; ?>
+        <?php $subtotalPage = 0; ?>
+        <?php $taxAmountPage = 0; ?>
+        <?php $grandTotalPage = 0; ?>
+        <?php $totalPages = 0;?>
+        <?php $currencyCode = ucfirst(strtolower($block->getCurrentCurrencySymbol())); ?>
+
+
+        <?php $creditmemoPrefix = $block->getEntityPrefix($creditmemo); ?>
+        <?php $creditmemoIncrementId = $creditmemo->getIncrementId();
+            // if ($creditmemoPrefix) {
+                // $creditmemoIncrementId = str_replace($creditmemoPrefix, "", $creditmemoIncrementId);
+            // }
+        ?>
+        <table class="only-outline details-table">
+            <tbody>
+                <tr>
+                    <td rowspan="1" style="width: 50%;">
+                        <div style="padding-top: 10px;">
+                            <?php echo $block->getLogo(); ?>
+                        </div>
+                    </td>
+
+                    <td rowspan="1" style="width: 50%;">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td style="text-align: left;text-transform: uppercase; font-size: 40px; padding-top: 10px;">
+                                        <?= $block->stripAccents((string) __("Credit memo")); ?>
+                                    </td>
+                                    <td style="text-align: right; vertical-align: middle; padding-top: 10px; font-size: 20px;">
+                                        <?= $creditmemoIncrementId; ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top; padding-top: 10px">
+                                        <p style="font-size: 12px;"><?= __("Date of issue") . ':'; ?> <span style="font-size: 16px;"><?= $block->getFormattedDate('d/m/Y', $creditmemo->getCreatedAt()); ?></span></p>
+                                    </td>
+                                    <td style="text-align: right; padding-top: 10px; font-size: 12px;">
+                                        <p>
+                                            <?= $block->stripAccents((string) __('V.A.T. rate')) . ': ' . $block->getConfigValue(\Hawksama\Invoice\Helper\Data::XML_PATH_GENERAL_STORE_INFORMATION_TAX_DISPLAYED, $storeId); ?>
+                                        </p>
+                                        <p>
+                                            <?= $block->stripAccents((string) __('V.A.T. on payment')); ?>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-top: 30px">
+                                    </td>
+                                </tr>
+                                <tr style="background-color: black; color: white; font-size: 18px; font-weight: bold;">
+                                    <td style="padding: 15px 0px 15px 10px; text-transform: uppercase;">
+                                        <?= $block->stripAccents((string) __("Grand Total")); ?>
+                                    </td>
+                                    <td style="text-align: right; padding: 15px 10px 15px 0px;">
+                                        <span style="">
+                                            <?= number_format((-1) * $creditmemo->getGrandTotal(), 2); ?>
+                                        </span>
+                                        <span style="font-size: 12px;">
+                                            <?= $block->stripAccents((string) __($currencyCode)); ?>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="provider-details">
+                        <?php $provider = $block->stripAccents($block->getConfigValue(\Hawksama\Invoice\Helper\Data::XML_PATH_GENERAL_STORE_INFORMATION_PROVIDER, $storeId)); ?>
+                        <?php $nrRegCom = $block->getConfigValue(\Hawksama\Invoice\Helper\Data::XML_PATH_GENERAL_STORE_INFORMATION_NR_REG_COM, $storeId); ?>
+                        <?php $cui = $block->getConfigValue(\Hawksama\Invoice\Helper\Data::XML_PATH_GENERAL_STORE_INFORMATION_CUI, $storeId); ?>
+                        <?php $socialAttribute = $block->getConfigValue(\Hawksama\Invoice\Helper\Data::XML_PATH_GENERAL_STORE_INFORMATION_FISCAL_ATTRIBUTE, $storeId); ?>
+                        <?php $socialCapital = $block->getConfigValue(\Hawksama\Invoice\Helper\Data::XML_PATH_GENERAL_STORE_INFORMATION_SOCIAL_CAPITAL, $storeId); ?>
+
+                        <?php $city = $block->stripAccents($block->getConfigValue(\Hawksama\Invoice\Helper\Data::XML_PATH_GENERAL_STORE_INFORMATION_CITY, $storeId)); ?>
+                        <?php $street = $block->stripAccents($block->getConfigValue(\Hawksama\Invoice\Helper\Data::XML_PATH_GENERAL_STORE_INFORMATION_STREET, $storeId)); ?>
+                        <?php $region = $block->stripAccents($block->getStoreRegion()); ?>
+
+                        <?php $bankAccount = $block->stripAccents($block->getConfigValue(\Hawksama\Invoice\Helper\Data::XML_PATH_GENERAL_STORE_INFORMATION_BANK_ACCOUNT, $storeId)); ?>
+                        <?php $bankName = $block->stripAccents($block->getConfigValue(\Hawksama\Invoice\Helper\Data::XML_PATH_GENERAL_STORE_INFORMATION_BANK_NAME, $storeId)); ?>
+
+                        <h5> <?= $block->stripAccents((string) __("Provider")); ?></h5>
+                        <ul>
+                            <li class="name"><strong><?= $provider ?></strong></li>
+                            <li><?= $block->stripAccents((string) __("Fiscal identification code")) . ": "; ?> <span><?= $cui ?? "-"; ?></span> </li>
+                            <li><?= $block->stripAccents((string) __("Fiscal Attribute")) . ": "; ?> <span><?= $socialAttribute ?? "-"; ?></span> </li>
+                            <li><?= sprintf("%s: <span>%s</span>, <span>%s</span>", $block->stripAccents((string) __("Address")), $street ?? "-", $city ?? "-"); ?></li>
+                            <li><?= sprintf("%s: <span>%s</span>", $block->stripAccents((string) __("Trade Register")), $nrRegCom ?? "-"); ?></li>
+                            <li><?= sprintf("%s: <span>%s</span>", $block->stripAccents((string) __("Social Capital")), $socialCapital ?? "-"); ?></li>
+                            <li><?= sprintf("%s: <span>%s</span>", $block->stripAccents((string) __("Region")), $region ?? "-"); ?></li>
+                            <li><?= sprintf("%s: <span>%s</span>", $block->stripAccents((string) __("Bank Account")), $bankAccount ?? "-"); ?></li>
+                            <li><?= sprintf("%s: <span>%s</span>", $block->stripAccents((string) __("Bank Name")), $bankName ?? "-"); ?></li>
+                        </ul>
+                    </td>
+                    <td class="customer-details">
+                        <h5> <?= $block->stripAccents((string) __("Customer")); ?></h5>
+                        
+                        <ul>
+                            <li class="name">
+                                <strong>
+                                    <?= 
+                                        (!empty($billingAddress->getCui()) &&
+                                            !empty($billingAddress->getNrRegCom()) &&
+                                            !empty($billingAddress->getCompany())
+                                        ) ? $block->stripAccents($billingAddress->getCompany()) : sprintf("%s %s", $block->stripAccents($billingAddress->getFirstname()), $block->stripAccents($billingAddress->getLastname())); 
+                                    ?>
+                                </strong>
+                            </li>
+                            <li>
+                                <?= sprintf("%s:", $block->stripAccents((string) __('Customer Type'))); ?>
+                                <span>
+                                    <?= (!empty($billingAddress->getCui()) &&
+                                            !empty($billingAddress->getNrRegCom()) &&
+                                            !empty($billingAddress->getCompany())
+                                        )? $block->stripAccents((string) __('Legal Person')) : $block->stripAccents((string) __('Individual')); ?>
+                                </span>
+                            </li>
+                            <?php if($billingAddress->getNrRegCom()):?>
+                                <li><?= sprintf("%s: <span>%s</span>", $block->stripAccents((string) __("Serial number in the trade register")), $billingAddress->getNrRegCom()); ?></li>
+                            <?php endif; ?>
+
+                            <?php if($billingAddress->getCui()):?>
+                                <li><?= sprintf("%s: <span>%s</span>", $block->stripAccents((string) __("Fiscal identification code")), $billingAddress->getCui()); ?></li>
+                            <?php endif; ?>
+
+                            <?php
+                                $billingStreet = $billingAddress->getStreet();
+                                if (is_array($billingStreet)) {
+                                    $billingStreet = implode(", ", $billingStreet);
+                                }
+                                $billingStreet = $block->stripAccents($billingStreet);
+                                $billingCity = $block->stripAccents($billingAddress->getCity());
+                                $billingRegion = $block->stripAccents($billingAddress->getRegion());
+                                $billingPostalCode = $block->stripAccents($billingAddress->getPostcode());
+                            ?>
+                            <?php $addressLength = strlen(sprintf("%s, %s", $billingCity, $billingStreet)); ?>
+                            <?php $numberOfAddressRows = ceil($addressLength / $addressRowLength); ?>
+                            <?php $listingHeight -= $numberOfAddressRows * $addressHeight; ?>
+                            <li><?= sprintf("%s: <span>%s</span>, <span>%s</span>, <span>%s</span>", $block->stripAccents((string) __("Address")), $billingCity, $billingStreet, $billingPostalCode); ?></li>
+                            <li><?= sprintf("%s: <span>%s</span>", $block->stripAccents((string) __("Phone")), $billingAddress->getTelephone()); ?>
+                            <li><?= sprintf("%s: <span>%s</span>", $block->stripAccents((string) __("Region")), $billingRegion); ?></li>
+
+                            <?php if($billingAddress->getEmail()):?>
+                                <li><?= sprintf("%s: <span>%s</span>", $block->stripAccents((string) __("E-mail")), $billingAddress->getEmail()); ?></li>
+                            <?php endif; ?>
+
+                            <?php if($billingAddress->getIban()):?>
+                                <li><?= sprintf("%s: <span>%s</span>", $block->stripAccents((string) __("Bank Account")), $billingAddress->getIban()); ?></li>
+                            <?php endif; ?>
+
+                            <?php if($billingAddress->getBank()):?>
+                                <li><?= sprintf("%s: <span>%s</span>", $block->stripAccents((string) __("Bank Name")), $billingAddress->getBank()); ?></li>
+                            <?php endif; ?>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" style="height: 30px; padding: 0; border-spacing: 0;"></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <table class="product-listing-table main">
+            <thead class="product-listing-header">
+                <tr style="text-align: center;">
+                    <th style="width: 5%"><p><?= $block->stripAccents((string) __("Crn. Nr.")); ?></p></th>
+                    <th style="width: 35%"><p><?= $block->stripAccents((string) __("Name of the Product or Service")); ?></p></th>
+                    <th style="width: 5%"><p><?= $block->stripAccents((string) __("M. U.")); ?></p></th>
+                    <th style="width: 9%"><p><?= $block->stripAccents((string) __("Value V.A.T.")); ?></p><p style="font-size: 10px"><?= __("-- %1 --", '%'); ?></p></th>
+                    <th style="width: 5%"><p><?= $block->stripAccents((string) __("Qty.")); ?></p></th>
+                    <th style="width: 15%"><p><?= $block->stripAccents((string) __("Price (per unit)")); ?></p><p style="font-size: 10px"><?= __("-- %1 --", $currencyCode); ?></p></th>
+                    <th style="width: 13%"><p><?= $block->stripAccents((string) __("Subtotal")); ?></p><p style="font-size: 10px"><?= __("-- %1 --", $currencyCode); ?></p></th>
+                    <th style="width: 13%"><p><?= $block->stripAccents((string) __("Amount V.A.T.")); ?></p><p style="font-size: 10px"><?= __("-- %1 --", $currencyCode); ?></p></th>
+                </tr>
+            </thead>
+            <tbody class="product-listing-body" style="font-size: 12px">
+                <?php foreach ($creditmemoItems as $creditmemoItem) :
+                    if (in_array($numberOfItems, $itemBreakpoints)): 
+                        $listingHeight = 230;
+                        $totalPages++;
+                    endif;
+                    $product = $creditmemoItem->getOrderItem()->getProduct();
+                    $productBarCode = false;
+                    if ($product && $product->getSku()) {
+                        $productBarCode = $product->getSku();
+                    }
+
+                    $productName = $block->stripAccents($creditmemoItem->getName());
+                    
+                    if ($productBarCode) {
+                        $productName = sprintf("%s, %s", $productName, $productBarCode);
+                    }
+                    ?>
+
+                    <tr class="only-vertical-lines">
+                        <td><?= $numberOfItems + 1; ?>
+                        <td style="text-align: left;"><?= $productName; ?></td>
+                        <?php $nameLength = strlen($productName); ?>
+                        <?php $splittedProductName = explode(" ", $productName);
+                            $specialRows = 0;
+                            foreach ($splittedProductName as $eachNamePart) {
+                                $eachNamePartLength = strlen($eachNamePart);
+                                if ($eachNamePartLength > $rowLength / 2) {
+                                    $nameLength - $rowLength;
+                                    $specialRows++;
+                                }
+                            }
+                        ?>
+                        <?php if ($nameLength > $rowLength): ?>
+                            <?php $listingHeight -= $rowLength * (ceil($nameLength / $rowLength) + $specialRows); ?>
+                        <?php else: ?>
+                            <?php $listingHeight -= $rowLength; ?>
+                        <?php endif; ?>
+                        <td><?= __("piece"); ?></td>
+                        <td><?= $block->getTaxRate($creditmemoItem, $customerId, $creditmemo->getStoreId()); ?></td>
+                        <td><?= number_format(((-1) * $creditmemoItem->getQty()), 0); ?></td>
+
+                        <?php 
+                        $price = $creditmemoItem->getBasePrice();
+                        $creditmemoItemTaxAmount = $creditmemoItem->getTaxAmount();
+                        if ($creditmemoItem->getDiscountAmount()):
+                            $creditmemoItemTaxAmount = $creditmemoItem->getRowTotalInclTax() - $creditmemoItem->getRowTotal();
+                        endif;
+                        ?>
+
+                        <td style="text-align: right;">
+                            <?= number_format(((-1) * ($creditmemoItem->getRowTotal() / $creditmemoItem->getQty())) , 2); ?>
+                        </td>
+
+                        <td style="text-align: right;">
+                            <?= number_format((-1) * $creditmemoItem->getRowTotal(), 2); ?>
+                        </td>
+
+                        <td style="text-align: right;"><?= number_format(((-1) * $creditmemoItemTaxAmount), 2); ?></td>
+                    </tr>
+
+                    <?php
+                    $subtotalPage += $creditmemoItem->getRowTotal() - $creditmemoItemTaxAmount;
+                    $taxAmountPage += $creditmemoItemTaxAmount;
+                    $grandTotalPage += $creditmemoItem->getRowTotal();
+                    $numberOfItems++; 
+                endforeach; ?>
+                
+                <tr class="only-vertical-lines">
+                    <td style="height: <?= $listingHeight . "px" ?>;"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="product-listing-table footer">
+            <tbody>
+                <tr class="first-row">
+                    <td style="width: 5%"></td>
+                    <td style="width: 35%"></td>
+                    <td style="width: 5%"></td>
+                    <td style="width: 5%"></td>
+                    <td style="width: 15%"></td>
+                    <td style="width: 9%"></td>
+                    <td style="width: 13%"></td>
+                    <td style="width: 13%"></td>
+                </tr>
+                <?php if (in_array($numberOfItems, $itemBreakpoints) || ($numberOfItems == $itemsCount)): ?>
+                    <?php if ($numberOfItems == $itemsCount): ?>
+                        <tr>
+                            <td colspan="4" rowspan="3" class="td-table-left-bottom">
+                                <table class="table-left-bottom">
+                                    <tbody>
+                                        <?php $leftNoteBlock = $block->getConfigValue(\Hawksama\Invoice\Helper\Data::XML_PATH_SALES_PDF_INVOICE_DOMPDF_LEFT_NOTE_BLOCK, $storeId); ?>
+                                        <?php $rightNoteBlock = $block->getConfigValue(\Hawksama\Invoice\Helper\Data::XML_PATH_SALES_PDF_INVOICE_DOMPDF_RIGHT_NOTE_BLOCK, $storeId); ?>
+                                        <tr>
+                                            <td style="width: 40%;">
+                                                <span style="line-height: 0.9;"><?= nl2br($leftNoteBlock) ?? "-"; ?></span>
+                                            </td>
+                                            <td style="width: 60%;">
+                                                <?php $rightNoteBlock = str_replace("{{date}}", $block->getFormattedDate('d.m.Y', $creditmemo->getCreatedAt()), $rightNoteBlock); ?>
+                                                <span style="line-height: 0.9;"><?= nl2br($rightNoteBlock) ?? "-"; ?></span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td rowspan="2" colspan="2" style="text-align: center;"><?= $block->stripAccents((string) __("Total:")); ?></td>
+                            <td style="text-align: center; font-size: 15px;"><?= number_format(((-1) * $grandTotalPage), 2); ?></td>
+                            <td style="text-align: center; font-size: 15px;"><?= number_format(((-1) * $taxAmountPage), 2); ?></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: center; font-size: 12px;"><?= $block->stripAccents((string) __('VAT on payment')); ?></td>
+                        </tr>
+                        <tr style="border-right:0;">
+                            <td colspan="2" style="border-right: 0px; vertical-align: top; font-size: 14px;">
+                                <p style="width: 60%;">
+                                    <?= $block->stripAccents((string) __("Signature on receipt:")); ?>
+                                </p>
+                            </td>
+                            <td colspan="2" style="background-color: #dbdbdb;">
+                                <p style="padding-bottom: 30px;">
+                                    <?= $block->stripAccents((string) __("Grand Total")); ?>
+                                </p>
+                                <p style="font-size: 18px; text-align: right; padding-right: 5px; padding-bottom: 5px;">
+                                    <?= number_format(((-1) * ($grandTotalPage + $taxAmountPage)), 2) . ' ' . $currencyCode; ?>
+                                </p>
+                            </td>
+                        </tr>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="4" rowspan="2" class="td-table-left-bottom" style="height: 70px;"></td>
+                            <td rowspan="2" colspan="2" style="text-align: center;"><?= $block->stripAccents((string) __("Grand Total of page")); ?></td>
+                            <td style="text-align: center; font-size: 15px;"><?= number_format(((-1) * $grandTotalPage), 2); ?></td>
+                            <td style="text-align: center; font-size: 15px;"><?= number_format(((-1) * $taxAmountPage), 2); ?></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right; font-size: 15px;" colspan="2"><?= number_format(((-1) * $grandTotalPage), 2); ?></td>
+                        </tr>
+                        <?php $subtotalPage = 0; ?>
+                        <?php $taxAmountPage = 0; ?>
+                        <?php $grandTotalPage = 0; ?>
+                    <?php endif; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+    <span id="number-of-pages" style="display: none;"><?= $totalPages; ?></span>
+<?php endif; ?>

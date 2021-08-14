@@ -1,0 +1,28 @@
+<?php
+/**
+ * @var \Magento\Sales\Block\Order\Invoice\Items $block
+ */
+
+$_order = $block->getOrder();
+$invoiceCollection = $_order->getInvoiceCollection();
+if(sizeof($invoiceCollection) == 1): 
+    foreach ($invoiceCollection as $key => $_invoice) :?>
+        <a href="<?= $block->escapeUrl($block->getUrl('invoice/pdf/download/', ['id' => $_invoice->getId()]))  ?>"
+            class="action print invoice"
+            target="_blank"
+            rel="noopener">
+            <span><?= $block->escapeHtml(__('Print Invoice')) ?></span>
+        </a> <?php
+    endforeach;
+else:
+    $invoiceNumber = 1;
+    foreach ($invoiceCollection as $key => $_invoice) :?>
+        <a href="<?= $block->escapeUrl($block->getUrl('invoice/pdf/download/', ['id' => $_invoice->getId()]))  ?>"
+            class="action print invoice"
+            target="_blank"
+            rel="noopener">
+            <span><?= sprintf("%s %d",$block->escapeHtml(__('Print Invoice')), $invoiceNumber); ?></span>
+        </a> <?php
+        $invoiceNumber++;
+    endforeach;
+endif;?>

@@ -1,0 +1,30 @@
+//
+//  Common
+//  ----------------------------------------------
+& when (@media-common = true) {
+    .account.sales-order-view {
+        .actions-toolbar.order-actions-toolbar {
+            .action.print {
+                display: none;
+
+                &.invoice {
+                    display: inline-block;
+                    float: none;
+                    margin-left: 30px;
+                }
+            }
+        }
+    }
+}
+
+//
+//  Mobile +
+//  --------------------------------------------
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__s) {
+    
+}
+
+@media print {
+    
+}

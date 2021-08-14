@@ -1,0 +1,27 @@
+{
+    "name": "hawksama/invoice-pdf",
+    "description": "Modul facturare pdf",
+    "type": "magento2-module",
+    "license": "OSL-3.0",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "email": "manue971@icloud.com",
+            "name": "Alexandru-Manuel Carabus"
+        }
+    ],
+    "version": "1.0.4",
+    "require": {
+        "php": "^7.0.0",
+        "dompdf/dompdf": "^0.8.3"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Hawksama\\Invoice\\": ""
+        }
+    }
+}

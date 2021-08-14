@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="hawksama" translate="label" sortOrder="10">
+            <label>Hawksama</label>
+        </tab>
+        
+        <section id="invoice_pdf" translate="label" type="text" sortOrder="320" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Invoice</label>
+            <tab>hawksama</tab>
+            <resource>Hawksama_Invoice::configuration</resource>
+            
+            <group id="invoice"  translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Invoice PDF</label>
+                <field id="dompdf_enabled" translate="label" type="select" sortOrder="99" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Use DOMPDF Extension</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="left_note_block" translate="label" type="textarea" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Left Note Block</label>
+                </field>
+                <field id="right_note_block" translate="label" type="textarea" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Right Note Block</label>
+                </field>
+            </group>
+            <group id="creditmemo"  translate="label" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Credit Memo PDF</label>
+                <field id="dompdf_enabled" translate="label" type="select" sortOrder="99" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Use DOMPDF Extension</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="left_note_block" translate="label" type="textarea" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Left Note Block</label>
+                </field>
+                <field id="right_note_block" translate="label" type="textarea" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Right Note Block</label>
+                </field>
+            </group>
+            <group id="voucher" translate="label" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Voucher PDF Configuration</label>
+                <field id="barcode" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Voucher Barcode</label>
+                </field>
+            </group>
+        </section>
+        <section id="general">
+            <group id="store_information">
+                <field id="provider" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Provider</label>
+                </field>
+                <field id="nr_reg_com" translate="label" type="text" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Nr. Reg. Com</label>
+                </field>
+                <field id="cui" translate="label" type="text" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>C.U.I</label>
+                </field>
+                <field id="fiscal_attribute" translate="label" type="text" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Fiscal Attribute</label>
+                </field>
+                <field id="social_capital" translate="label" type="text" sortOrder="150" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Social Capital</label>
+                </field>
+                <field id="bank_account" translate="label" type="text" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Bank Account</label>
+                </field>
+                <field id="bank_name" translate="label" type="text" sortOrder="170" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Bank Name</label>
+                </field>
+                <field id="default_tax_displayed" translate="label" type="text" sortOrder="170" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Default Tax Displayed on Invoice</label>
+                </field>
+            </group>
+        </section>
+        <section id="shipping">
+            <group id="invoice" translate="label" type="text" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Shipping Carrier Invoice Configuration</label>
+                <field id="shipping_barcode" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Shipping Barcode</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
