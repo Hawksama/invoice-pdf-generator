@@ -3,7 +3,7 @@
     "description": "Magento 2 PDF invoice generator",
     "type": "magento2-module",
     "license": "OSL-3.0",
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "authors": [
         {
             "email": "manue971@icloud.com",
@@ -31,5 +31,11 @@
         "psr-4": {
             "Hawksama\\Invoice\\": ""
         }
-    }
+    },
+    "repositories":[
+        {
+            "type": "vcs",
+            "url": "git@github.com:hawksama/magento-2-pdf-invoice-generator..git"
+        }
+    ]
 }
