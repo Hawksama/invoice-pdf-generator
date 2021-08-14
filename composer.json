@@ -1,9 +1,8 @@
 {
     "name": "hawksama/invoice-pdf",
-    "description": "Modul facturare pdf",
+    "description": "Invoice PDF generator",
     "type": "magento2-module",
     "license": "OSL-3.0",
-    "minimum-stability": "dev",
     "prefer-stable": true,
     "authors": [
         {
@@ -11,9 +10,9 @@
             "name": "Alexandru-Manuel Carabus"
         }
     ],
-    "version": "1.0.4",
+    "version": "1.0.5",
     "require": {
-        "php": "^7.0.0",
+        "php": "^7.2.0",
         "dompdf/dompdf": "^0.8.3"
     },
     "autoload": {
