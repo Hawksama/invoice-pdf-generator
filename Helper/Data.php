@@ -115,7 +115,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         );
     }
 
-    public function getImage ($configPath)
+    public function getImage($configPath)
     {
         if ($filePath = $this->getConfigValue($configPath)) {
             return sprintf('%s' . self::MEDIA_Hawksama_SALES . '/%s', $this->getMediaUrl(), $filePath);
@@ -123,7 +123,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         return false;
     }
 
-    public function getImagePath ($configPath)
+    public function getImagePath($configPath)
     {
         if ($filePath = $this->getConfigValue($configPath)) {
             return sprintf("%s/%s", self::MEDIA_Hawksama_SALES, $filePath);
@@ -267,7 +267,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
                 chr(196) . chr(172) => 'I', chr(196) . chr(173) => 'i',
                 chr(196) . chr(174) => 'I', chr(196) . chr(175) => 'i',
                 chr(196) . chr(176) => 'I', chr(196) . chr(177) => 'i',
-                chr(196) . chr(178) => 'IJ',chr(196) . chr(179) => 'ij',
+                chr(196) . chr(178) => 'IJ', chr(196) . chr(179) => 'ij',
                 chr(196) . chr(180) => 'J', chr(196) . chr(181) => 'j',
                 chr(196) . chr(182) => 'K', chr(196) . chr(183) => 'k',
                 chr(196) . chr(184) => 'k', chr(196) . chr(185) => 'L',
@@ -283,13 +283,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
                 chr(197) . chr(140) => 'O', chr(197) . chr(141) => 'o',
                 chr(197) . chr(142) => 'O', chr(197) . chr(143) => 'o',
                 chr(197) . chr(144) => 'O', chr(197) . chr(145) => 'o',
-                chr(197) . chr(146) => 'OE',chr(197) . chr(147) => 'oe',
-                chr(197) . chr(148) => 'R',chr(197) . chr(149) => 'r',
-                chr(197) . chr(150) => 'R',chr(197) . chr(151) => 'r',
-                chr(197) . chr(152) => 'R',chr(197) . chr(153) => 'r',
-                chr(197) . chr(154) => 'S',chr(197) . chr(155) => 's',
-                chr(197) . chr(156) => 'S',chr(197) . chr(157) => 's',
-                chr(197) . chr(158) => 'S',chr(197) . chr(159) => 's',
+                chr(197) . chr(146) => 'OE', chr(197) . chr(147) => 'oe',
+                chr(197) . chr(148) => 'R', chr(197) . chr(149) => 'r',
+                chr(197) . chr(150) => 'R', chr(197) . chr(151) => 'r',
+                chr(197) . chr(152) => 'R', chr(197) . chr(153) => 'r',
+                chr(197) . chr(154) => 'S', chr(197) . chr(155) => 's',
+                chr(197) . chr(156) => 'S', chr(197) . chr(157) => 's',
+                chr(197) . chr(158) => 'S', chr(197) . chr(159) => 's',
                 chr(197) . chr(160) => 'S', chr(197) . chr(161) => 's',
                 chr(197) . chr(162) => 'T', chr(197) . chr(163) => 't',
                 chr(197) . chr(164) => 'T', chr(197) . chr(165) => 't',
@@ -305,7 +305,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
                 chr(197) . chr(184) => 'Y', chr(197) . chr(185) => 'Z',
                 chr(197) . chr(186) => 'z', chr(197) . chr(187) => 'Z',
                 chr(197) . chr(188) => 'z', chr(197) . chr(189) => 'Z',
-                chr(197) . chr(190) => 'z', chr(197) . chr(191) => 's',chr(537)=>'s',
+                chr(197) . chr(190) => 'z', chr(197) . chr(191) => 's', chr(537) => 's',
                 // Euro Sign
                 chr(226) . chr(130) . chr(172) => 'E',
                 // GBP (Pound) Sign
@@ -313,17 +313,17 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
                 // Romanian CHARS
                 "\xC4\x82" => "A",
                 "\xC4\x83" => "a",
-                "\xC3\x82" => "A", 
-                "\xC3\xA2" => "a", 
-                "\xC3\x8E" => "I", 
-                "\xC3\xAE" => "i", 
-                "\xC8\x98" => "S", 
-                "\xC8\x99" => "s", 
-                "\xC8\x9A" => "T", 
-                "\xC8\x9B" => "t", 
-                "\xC5\x9E" => "S", 
-                "\xC5\x9F" => "s", 
-                "\xC5\xA2" => "T", 
+                "\xC3\x82" => "A",
+                "\xC3\xA2" => "a",
+                "\xC3\x8E" => "I",
+                "\xC3\xAE" => "i",
+                "\xC8\x98" => "S",
+                "\xC8\x99" => "s",
+                "\xC8\x9A" => "T",
+                "\xC8\x9B" => "t",
+                "\xC5\x9E" => "S",
+                "\xC5\x9F" => "s",
+                "\xC5\xA2" => "T",
                 "\xC5\xA3" => "t"
             ];
 
@@ -355,30 +355,30 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     public static function seems_utf8($str)
     {
         $length = strlen($str);
-        for ($i=0; $i < $length; $i++) {
+        for ($i = 0; $i < $length; $i++) {
             $c = ord($str[$i]);
             if ($c < 0x80) {
                 $n = 0;
             } # 0bbbbbbb
             elseif (($c & 0xE0) == 0xC0) {
-                $n=1;
+                $n = 1;
             } # 110bbbbb
             elseif (($c & 0xF0) == 0xE0) {
-                $n=2;
+                $n = 2;
             } # 1110bbbb
             elseif (($c & 0xF8) == 0xF0) {
-                $n=3;
+                $n = 3;
             } # 11110bbb
             elseif (($c & 0xFC) == 0xF8) {
-                $n=4;
+                $n = 4;
             } # 111110bb
             elseif (($c & 0xFE) == 0xFC) {
-                $n=5;
+                $n = 5;
             } # 1111110b
             else {
                 return false;
             } # Does not match any model
-            for ($j=0; $j<$n; $j++) { # n bytes matching 10bbbbbb follow ?
+            for ($j = 0; $j < $n; $j++) { # n bytes matching 10bbbbbb follow ?
                 if ((++$i == $length) || ((ord($str[$i]) & 0xC0) != 0x80)) {
                     return false;
                 }

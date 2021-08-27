@@ -25,7 +25,7 @@ class CreditmemoPlugin
         Data $helper,
         Dompdf $dompdf,
         LayoutFactory $layoutFactory
-    ){
+    ) {
         $this->helper = $helper;
         $this->dompdf = $dompdf;
         $this->layoutFactory = $layoutFactory;

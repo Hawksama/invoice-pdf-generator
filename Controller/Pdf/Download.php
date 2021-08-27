@@ -1,4 +1,5 @@
 <?php
+
 namespace Hawksama\Invoice\Controller\Pdf;
 
 use Magento\Framework\App\Action\Context;
@@ -42,7 +43,7 @@ class Download extends Action\Action
      * @var LayoutFactory
      */
     protected $layoutFactory;
-    
+
     /**
      * @var RedirectFactory
      */
@@ -88,7 +89,7 @@ class Download extends Action\Action
         $invoiceId = (int)$this->getRequest()->getParam('id');
 
         // if invoice id parameter is not sent, create redirect
-        if(!$invoiceId){
+        if (!$invoiceId) {
             $resultRedirect = $this->redirect->create();
             $resultRedirect->setPath('sales/order/history');
             return $resultRedirect;
@@ -96,13 +97,13 @@ class Download extends Action\Action
 
         try {
             $invoiceData = $this->invoice->load($invoiceId);
-        } catch (Exception $exception)  {
+        } catch (Exception $exception) {
             $this->logger->critical($exception->getMessage());
             $invoiceData = null;
         }
 
         // if invoice is empty, create redirect
-        if(!$invoiceData || !$invoiceData->getId()){
+        if (!$invoiceData || !$invoiceData->getId()) {
             $resultRedirect = $this->redirect->create();
             $resultRedirect->setPath('sales/order/history');
             return $resultRedirect;
@@ -112,10 +113,11 @@ class Download extends Action\Action
         $customerId = $this->customerSession->getCustomerId();
 
         // if invoice is own by the current user => download the pdf, else create redirect
-        if($order->getId()
+        if (
+            $order->getId()
             && $order->getCustomerId()
-            && $order->getCustomerId() == $customerId)
-        {
+            && $order->getCustomerId() == $customerId
+        ) {
             $dompdf = $this->dompdf;
             $layout = $this->layoutFactory->create();
 
@@ -199,7 +201,7 @@ class Download extends Action\Action
                     $scriptString = '$pdf->text(405, 35, "' . $prefixArray['prefix'] . '", "helvetica", 13, array(0,0,0));';
                     $scriptString .= 'if ($PAGE_NUM == 1) { $pdf->text(35, 35, "' . 'Numar total pagini ' . $prefixArray['pages'] . ' • ' . __('Total produse') . ' ' . $prefixArray['items_count'] . '", "helvetica", 10, array(0,0,0)); }';
                 }
-                
+
                 $dompdf->getCanvas()->page_script($scriptString);
             }
 

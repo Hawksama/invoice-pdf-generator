@@ -1,4 +1,5 @@
 <?php
+
 namespace Hawksama\Invoice\Controller\Invoice;
 
 use Magento\Framework\App\Action;
@@ -33,15 +34,16 @@ class Download extends Action\Action
     }
 
     public function execute()
-    {        $invoiceId = (int)$this->getRequest()->getParam('invoice_id');
-        if(!$invoiceId){
+    {
+        $invoiceId = (int)$this->getRequest()->getParam('invoice_id');
+        if (!$invoiceId) {
             /** @var \Magento\Framework\Controller\Result\Redirect $resultRedirect */
             $resultRedirect = $this->resultRedirectFactory->create();
             $resultRedirect->setPath('sales/order/history');
             return $resultRedirect;
         }
         $invoice = $this->_objectManager->create('Magento\Sales\Api\InvoiceRepositoryInterface')->get($invoiceId);
-        if(!$invoice || !$invoice->getId()){
+        if (!$invoice || !$invoice->getId()) {
             /** @var \Magento\Framework\Controller\Result\Redirect $resultRedirect */
             $resultRedirect = $this->resultRedirectFactory->create();
             $resultRedirect->setPath('sales/order/history');
@@ -51,9 +53,11 @@ class Download extends Action\Action
         $order = $invoice->getOrder();
         $customerId = $this->customerSession->getCustomerId();
 
-        // if($order->getId()
-        //     && $order->getCustomerId()
-        //     && $order->getCustomerId() == $customerId){
+        if (
+            $order->getId()
+            && $order->getCustomerId()
+            && $order->getCustomerId() == $customerId
+        ) {
             $pdf = $this->_objectManager->create('Magento\Sales\Model\Order\Pdf\Invoice')->getPdf([$invoice]);
             $date = $this->_objectManager->get('Magento\Framework\Stdlib\DateTime\DateTime')->date('Y-m-d_H-i-s');
             return $this->fileFactory->create(
@@ -63,12 +67,12 @@ class Download extends Action\Action
                 'application/pdf'
             );
 
-            // http://demax.loc/pdf_invoice_frontend/invoice/download?invoice_id=1
-        // } else {
-        //     /** @var \Magento\Framework\Controller\Result\Redirect $resultRedirect */
-        //     $resultRedirect = $this->resultRedirectFactory->create();
-        //     $resultRedirect->setPath('sales/order/history');
-        //     return $resultRedirect;
-        // }
+            // http://domain.loc/pdf_invoice_frontend/invoice/download?invoice_id=1
+        } else {
+            /** @var \Magento\Framework\Controller\Result\Redirect $resultRedirect */
+            $resultRedirect = $this->resultRedirectFactory->create();
+            $resultRedirect->setPath('sales/order/history');
+            return $resultRedirect;
+        }
     }
 }

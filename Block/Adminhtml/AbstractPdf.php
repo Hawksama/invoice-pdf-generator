@@ -119,8 +119,8 @@ class AbstractPdf extends \Magento\Framework\View\Element\Template
             $entity->getEntityType(),
             $entity->getStoreId()
         )
-        ->getActiveProfile()
-        ->getPrefix();
+            ->getActiveProfile()
+            ->getPrefix();
     }
 
     public function getShippingItem($entity, $order)
@@ -202,7 +202,6 @@ class AbstractPdf extends \Magento\Framework\View\Element\Template
         $discountItem->setData('order_item', $discountPseudoOrderItem);
 
         return $discountItem;
-
     }
 
     public function getDiscountItem($entityItem, $negativeAmount = true)
@@ -252,7 +251,7 @@ class AbstractPdf extends \Magento\Framework\View\Element\Template
         $items = $entity->getItems();
         $entityItems = [];
 
-        $negativeAmount = ($entity->getEntityType() == 'creditmemo')? false : true;
+        $negativeAmount = ($entity->getEntityType() == 'creditmemo') ? false : true;
 
         foreach ($items as $item) {
             if ($item->getOrderItem()->getParentItem()) {
@@ -270,52 +269,6 @@ class AbstractPdf extends \Magento\Framework\View\Element\Template
         if ($shippingItem) {
             $entityItems[] = $shippingItem;
         }
-
-        /* $feesQuoteCollection = $this->feeCollectionFactory->create()
-        ->addFieldToFilter('order_id', $order->getId());
-
-        if ($feesQuoteCollection->getSize()) {
-
-            $giftwrapItem = $this->dataObjectFactory->create();
-            $giftwrapItemPseudoProduct = $this->dataObjectFactory->create();
-            $giftwrapItemPseudoOrderItem = $this->dataObjectFactory->create();
-
-            $giftWrapName = $this->helper->getConfigValue(\Hawksama\Invoice\Helper\Data::XML_PATH_GIFT_WRAP_NAME);
-            $giftWrapBarCode = $this->helper->getConfigValue(\Hawksama\Invoice\Helper\Data::XML_PATH_GIFT_WRAP_BAR_CODE);
-            $giftWrapTaxClass = $this->helper->getConfigValue(\Hawksama\Invoice\Helper\Data::XML_PATH_GIFT_WRAP_TAX_CLASS);
-
-            if ($giftWrapName && $giftWrapBarCode) {
-
-                $feeAmount = 0;
-                $baseFeeAmount = 0;
-
-                foreach ($feesQuoteCollection->getItems() as $fee) {
-                    $feeAmount += $fee->getData('amount');
-                    $baseFeeAmount += $fee->getData('base_amount');
-                }
-
-                $feeVATAmount = 0;
-                $feeVATRate = 0;
-                if ($giftWrapTaxClass) {
-                    $feeVATRate = $this->taxCalculationApi->getCalculatedRate($giftWrapTaxClass, $customerId, $invoice->getStoreId());
-                    $feeVATAmount = $this->calculationTool->calcTaxAmount($feeAmount, $feeVATRate, true);
-                }
-
-                $giftWrapProduct = $this->dataObjectFactory->create()
-                    ->setData('nume_facturis', $giftWrapName)
-                    ->setData('locatie', '')
-                    ->setData('cod_bare', $giftWrapBarCode)
-                    ->setData('sku', 'giftwrap');
-                $giftwrapItem->setData('name', $giftWrapName)
-                    ->setData('qty', 1)
-                    ->setData('product', $giftWrapProduct)
-                    ->setData('price', $feeAmount - $feeVATAmount)
-                    ->setData('row_total', $feeAmount)
-                    ->setData('tax_amount', $feeVATAmount)
-                    ->setData(self::VAT_PERCENTAGE, $feeVATRate);
-                $invoiceItems[] = $giftwrapItem;
-            }
-        }*/
 
         return $entityItems;
     }
@@ -346,6 +299,7 @@ class AbstractPdf extends \Magento\Framework\View\Element\Template
         if (!$regionId) {
             return false;
         }
+
         $regionModel = $this->regionFactory->create()->load($regionId);
         if (!$regionModel->getId()) {
             return false;

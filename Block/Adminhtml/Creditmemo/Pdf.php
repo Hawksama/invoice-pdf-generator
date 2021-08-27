@@ -19,8 +19,8 @@ class Pdf extends \Hawksama\Invoice\Block\Adminhtml\AbstractPdf
 
     public function stripAccents($string)
     {
-        if(is_object($string)) {
-            if($string->getText()) {
+        if (is_object($string)) {
+            if ($string->getText()) {
                 return $this->helper->stripAccents($string->getText());
             }
         }

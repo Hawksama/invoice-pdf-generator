@@ -1,9 +1,11 @@
 <?php
+
 /**
  *
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
+
 namespace Hawksama\Invoice\Controller\Order;
 
 use Magento\Sales\Controller\OrderInterface;
@@ -101,7 +103,7 @@ class PrintInvoice extends \Magento\Sales\Controller\Order\PrintInvoice implemen
             return $resultRedirect;
         }
     }
-    
+
     /**
      * @param \Magento\Sales\Model\Order\Pdf\Invoice $subject
      * @param callable $proceed
@@ -199,7 +201,7 @@ class PrintInvoice extends \Magento\Sales\Controller\Order\PrintInvoice implemen
                 $scriptString = '$pdf->text(405, 35, "' . $prefixArray['prefix'] . '", "helvetica", 13, array(0,0,0));';
                 $scriptString .= 'if ($PAGE_NUM == 1) { $pdf->text(35, 35, "' . 'Numar total pagini ' . $prefixArray['pages'] . ' • ' . __('Total produse') . ' ' . $prefixArray['items_count'] . '", "helvetica", 10, array(0,0,0)); }';
             }
-            
+
             $dompdf->getCanvas()->page_script($scriptString);
         }
 

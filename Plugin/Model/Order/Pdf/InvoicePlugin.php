@@ -25,7 +25,7 @@ class InvoicePlugin
         Data $helper,
         Dompdf $dompdf,
         LayoutFactory $layoutFactory
-    ){
+    ) {
         $this->helper = $helper;
         $this->dompdf = $dompdf;
         $this->layoutFactory = $layoutFactory;
@@ -128,7 +128,7 @@ class InvoicePlugin
                 $scriptString = '$pdf->text(405, 35, "' . $prefixArray['prefix'] . '", "helvetica", 13, array(0,0,0));';
                 $scriptString .= 'if ($PAGE_NUM == 1) { $pdf->text(35, 35, "' . 'Numar total pagini ' . $prefixArray['pages'] . ' • ' . __('Total produse') . ' ' . $prefixArray['items_count'] . '", "helvetica", 10, array(0,0,0)); }';
             }
-            
+
             $dompdf->getCanvas()->page_script($scriptString);
         }
 

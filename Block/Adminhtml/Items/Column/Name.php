@@ -45,7 +45,7 @@ class Name extends \Magento\Sales\Block\Adminhtml\Items\Column\Name
      */
     public function getItemImage($item): string
     {
-        if($item->getProduct()) {
+        if ($item->getProduct()) {
             return $this->imageHelper->init($item->getProduct(), 'product_thumbnail_image')->getUrl();
         }
 
